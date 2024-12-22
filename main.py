@@ -6,7 +6,6 @@ import os
 import shutil
 import re
 
-# Function to run the DepotDownloader command
 def run_command(pubfileid, save_location):
     print(f"----------Downloading {pubfileid}--------\n")
     dir_option = f"-dir \"{save_location}\""  # Ensure the directory path is correctly formatted for Windows
@@ -19,9 +18,6 @@ def run_command(pubfileid, save_location):
     process.wait()
     print(f"-------------Download finished-----------\n")
 
-
-
-
 # Accounts and passwords
 accounts = {'ruiiixx': 'S67GBTB83D3Y',
     'premexilmenledgconis': 'M3BYYkhaSmxEYg==',
@@ -31,6 +27,8 @@ accounts = {'ruiiixx': 'S67GBTB83D3Y',
     '787109690': 'SHVjVXhZTVFpZzE1'
     }
 # passwords = {account: base64.b64decode(accounts[account]).decode('utf-8') for account in accounts}
+#screw this wierd tkinter sh*t
+#also like how is this real its just free steam accounts with games lol
 username = 'ruiiixx'
 password = 'S67GBTB83D3Y'
 
@@ -59,15 +57,15 @@ def wallpaper_exe_location():
     except FileNotFoundError:
         with open('wallpaperexe.json', 'w') as file:
             file.write(f"""
-{{
-    "Lively_exe": "C:/Users/{os.getlogin()}/AppData/Local/Programs/Lively Wallpaper/Lively.exe",
-    "Lively_ui": "C:/Users/{os.getlogin()}/AppData/Local/Programs/Lively Wallpaper/Plugins/UI/Lively.UI.WinUI.exe"
-}}
-""")
-        print("Location exe")
+            {{
+                "Lively_exe": "C:/Users/{os.getlogin()}/AppData/Local/Programs/Lively Wallpaper/Lively.exe",
+                "Lively_ui": "C:/Users/{os.getlogin()}/AppData/Local/Programs/Lively Wallpaper/Plugins/UI/Lively.UI.WinUI.exe"
+            }}
+            """)
+        print("Auto-generated config")
         sys.exit(1)
-def convert_format(input_data):
 
+def convert_format(input_data):
     if isinstance(input_data, str):
         input_data = json.loads(input_data)
     # Extract values from the input JSON
@@ -80,13 +78,11 @@ def convert_format(input_data):
     output_data = {
         "AppVersion": "0.3.1.0",
         "Title": title,
-        "Thumbnail": preview,  # Static value, replace as needed
+        "Thumbnail": preview, 
         "Preview": preview,
-        "Desc": desc,  # Placeholder, can be adjusted
-        "Author": "Unknown Author",  # Placeholder, replace as needed
-        "License": "Creative Commons Attribution-NonCommercial 4.0 International",
-        "Contact": "https://www.example.com/",  # Placeholder, replace as needed
-        "Type": 7,  # Assuming fixed type, replace if dynamic
+        "Desc": desc,
+        "License": "Legal stuff bla bla bla",
+        "Type": 7, #didn't read documentation, its proabaly fine
         "FileName": file_name
     }
     
@@ -113,6 +109,7 @@ if input("local ") == "yes":
         file.write(json.dumps(converted_json, indent=2))
     shutil.copy(f'{path}/{filename}', f'{save_location}/{title}/{filename}')
     shutil.copy(f'{path}/{preview}', f'{save_location}/{title}/{preview}')
+    #should probably use api but whatever
     try:
         subprocess.run("taskkill -f -im Lively.UI.WinUI.exe")
     except:
@@ -129,7 +126,8 @@ if input("local ") == "yes":
 else:
     wallpaper_location()
     wallpaper_exe_location()
-    shutil.rmtree("./tmp")
+    if os.path.exists("./tmp"):
+        shutil.rmtree("./tmp")
     os.mkdir("./tmp")
     path = input("url path: ")
     path = re.search(r'\b\d{8,10}\b', path.strip())
@@ -152,13 +150,13 @@ else:
     print(f'./tmp/{filename}' + f'{save_location}/{title}/{filename}')
     shutil.copy(f'./tmp/{preview}', f'{save_location}/{title}/{preview}')
     try:
-        subprocess.run("taskkill -f -im Lively.UI.WinUI.exe")
-    except:
-        pass
-    try:
-        subprocess.run("taskkill -f -im Lively.exe")
+        subprocess.run(f"{wallpaper_exe} --shutdown true")
     except:
         pass
     os.popen(wallpaper_exe)
-    print(wallpaper_ui)
-    subprocess.run(wallpaper_ui)
+    subprocess.run(f"{wallpaper_exe} --showApp true")
+    shutil.rmtree("./tmp/")
+    subprocess.run("taskkill -f -im pythonw.exe")
+    subprocess.run("taskkill -f -im py.exe")
+    subprocess.run("taskkill -f -im python.exe")
+    sys.exit(0)
